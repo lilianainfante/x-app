@@ -3,12 +3,6 @@
 import unittest
 import coverage
 
-from flask.cli import FlaskGroup
-
-from project import create_app, db
-from project.api.models import User
-
-
 COV = coverage.coverage(
     branch=True,
     include='project/*',
@@ -18,6 +12,14 @@ COV = coverage.coverage(
     ]
 )
 COV.start()
+
+
+from flask.cli import FlaskGroup
+
+from project import create_app, db
+from project.api.models import User
+
+
 
 app = create_app()
 cli = FlaskGroup(create_app=create_app)
@@ -42,8 +44,8 @@ def test():
 @cli.command('seed_db')
 def seed_db():
     """Seeds the database."""
-    db.session.add(User(username='liliana', email="lilianainfante@upeu.edu.pe"))
-    db.session.add(User(username='infante', email="infante@gmail.com"))
+    db.session.add(User(username='liliana', email="lilianainfante@upeu.edu.pe", password='greaterthaneight'))
+    db.session.add(User(username='infante', email="infante@gmail.com", password='greaterthaneight'))
     db.session.commit()
 
 @cli.command()
