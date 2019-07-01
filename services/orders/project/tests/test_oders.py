@@ -1,23 +1,24 @@
 # services/users/project/tests/test_users.py
 
+
 import json
 import unittest
 from project import db 
-from project.api.models import Customers 
+from project.api.models import Customer 
 from project.tests.base import BaseTestCase
 
 
 def add_customer(name):
-    customer = Customers(name=name)
+    customer = Customer(name=name)
     db.session.add(customer)
     db.session.commit()
     return customer
 
 
-class TestUserService(BaseTestCase):
-    """Tests for the Users Service."""
+class TestOdersService(BaseTestCase):
+    """Tests for the Orders Service."""
 
-    def test_users(self):
+    def test_orders(self):
         """Ensure the /ping route behaves correctly."""
         response = self.client.get('/orders/ping')
         data = json.loads(response.data.decode())
@@ -37,7 +38,7 @@ class TestUserService(BaseTestCase):
                 content_type = 'application/json',
             )
             data = json.loads(response.data.decode())
-            self.assertEqual(response.status_code, 400)
+            self.assertEqual(response.status_code, 201)
             self.assertIn('carga Invalida', data['message'])
             self.assertIn('fallo', data['status'])
 
@@ -54,17 +55,42 @@ class TestUserService(BaseTestCase):
             self.assertIn('carga Invalida', data['message'])
             self.assertIn('fallo', data['status'])
 
+    def test_add_customer_duplicate_name(self):
+        """Asegurando que se produce un error si el name ya existe."""
+        with self.client:
+            response = self.client.post(
+                '/customers',
+                data=json.dumps({
+                    'name': 'liliana',
+                    
+                }),
+                content_type='application/json',
+            )
+            response = self.client.post(
+                '/customers',
+                data=json.dumps({
+                    'name': 'liliana',
+                    
+                }),
+                content_type='application/json',
+            )
+            data = json.loads(response.data.decode())
+            self.assertEqual(response.status_code, 400)
+            self.assertIn(
+                'Disculpa. El name ya existe.', data['message'])
+            self.assertIn('falló', data['status'])
+
     def test_add_customer_json_keys(self):
         """Asegurando que se produzca un error si el objeto json
-        no tiene una clave username"""
+        no tiene una clave name"""
         with self.client:
             response = self.client.post(
                 '/customers',
                 data=json.dumps({'name': 'lilianaclaribel'}),
                 content_type='application/json',
             )
-            data=json.loads(response.data.decode())
-            self.assertEqual(response.status_code, 201)
+            data = json.loads(response.data.decode())
+            self.assertEqual(response.status_code, 400)
             self.assertIn('lilianaclaribel was added!', data['message'])
             self.assertIn('success', data['status'])
 
@@ -73,7 +99,7 @@ class TestUserService(BaseTestCase):
         customer = add_customer(name='lilianaclaribel')
         with self.client:
             response = self.client.get(f'/customers/{customer.id}')
-            data=json.loads(response.data.decode())
+            data = json.loads(response.data.decode())
             self.assertEqual(response.status_code, 200)
             self.assertIn('lilianaclaribel', data['data']['name'])
             self.assertIn('success', data['status'])
@@ -96,17 +122,17 @@ class TestUserService(BaseTestCase):
             self.assertIn('El usuario no existe', data['message'])
             self.assertIn('fallo', data['status'])
 
-    def test_all_customers(self):
+    def test_all_customer(self):
         """ Asegurando de que todos los usuarios se comporten correctamente."""
-        add_customer('lili')
-        add_customer('clari')
+        add_customer('liliana')
+        add_customer('claribel')
         with self.client:
             response = self.client.get('/customers')
             data = json.loads(response.data.decode())
             self.assertEqual(response.status_code, 200)
-            self.assertEqual(len(data['data']['customers']), 2)
-            self.assertIn('lili', data['data']['customers'][0]['name'])
-            self.assertIn('clari', data['data']['customers'][1]['name'])   
+            self.assertEqual(len(data['data']['customer']), 2)
+            self.assertIn('liliana', data['data']['customer'][0]['name'])
+            self.assertIn('claribel', data['data']['customer'][1]['name'])   
             self.assertIn('success', data['status'])
 
 

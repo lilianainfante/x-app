@@ -1,10 +1,10 @@
-# services/users/manage.py
+# services/orders/manage.py
 
 import unittest
 from flask.cli import FlaskGroup
 
 from project import create_app, db  # nuevo
-from project.api.models import Customers
+from project.api.models import Customer
 
 app = create_app()
 cli = FlaskGroup(create_app=create_app)
@@ -18,8 +18,8 @@ def recreate_db():
 @cli.command('seed_db')
 def seed_db():
     """Sembrado en la base de datos"""
-    db.session.add(Customers(name='lilianaclaribel'))
-    db.session.add(Customers(name='merlyyeslin'))
+    db.session.add(Customer(name='lilianaclaribel'))
+    db.session.add(Customer(name='merlyyeslin'))
     db.session.commit()
 
 @cli.command()

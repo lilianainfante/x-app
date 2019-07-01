@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Flask on Docker</title>
+    <title>customer</title>
     <!-- meta -->
     <meta name="description" content="">
     <meta name="author" content="">
@@ -12,6 +12,7 @@
       href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css"
       rel="stylesheet"
     >
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 
     {% block css %}{% endblock %}
   </head>
@@ -39,80 +40,186 @@
           <a class="navbar-item">
             Documentation
           </a>
-
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link">
-              More
-            </a>
-
-            <div class="navbar-dropdown">
-              <a class="navbar-item">
-                About
-              </a>
-              <a class="navbar-item">
-                Jobs
-              </a>
-              <a class="navbar-item">
-                Contact
-              </a>
-              <hr class="navbar-divider">
-              <a class="navbar-item">
-                Report an issue
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="navbar-end">
-          <div class="navbar-item">
-            <div class="buttons">
-              <a class="button is-link">
-                <strong>Sign up</strong>
-              </a>
-              <a class="button is-light">
-                Log in
-              </a>
-            </div>
-          </div>
         </div>
       </div>
-    </nav>
-    <!--  -->
-    <div class="container">
-      <div class="column is-one-third">
-        <br>
-        <h1 class="title">Todos los usuarios</h1>
-        <hr><br>
-        <form action="/" method="POST">
-          <div class="field">
-            <input
-              name="username" class="input"
-              type="text" placeholder="Ingrese un nombre de usuario" required>
+
+          <div class="navbar-end">
+            <div class="navbar-item">
+              <div class="buttons">
+                <a class=2button is-link>
+                  <strong>Sign up</strong>
+                </a>
+                <a class="button is-light">
+                  Inicie Sesion
+                </a>
+              </div>
+            </div>
           </div>
-          <div class="field">
-            <input
-              name="email" class="input"
-              type="email" placeholder="Ingrese una dirección email" required>
+        </nav>
+        <!--  -->
+        <div class="container">
+          <div class="column is-one-third">
+            <br>
+            <h1 class="title">Todos los usuarios</h1>
+            <hr><br>
+            <form action="/" method="POST">
+
+              <div class="field">
+                <label class="label">Usuario</label>
+                <div class="control has-icons-left has-icons-right">
+                    <input class="input is-success" name="username" type="text" placeholder="Ingrese su usuario"s>
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-user"></i>
+                    </span>
+                    <span class="icon is-small is-right">
+                      <i class="fas fa-check"></i>
+                    </span>
+      
+      
+                <div class="field">
+                  <label class="label">Correo</label>
+                  <div class="control has-icons-left has-icons-right">
+                    <input class="input is-success" name="email" type="email" placeholder="Ingrese su correo">
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-envelope"></i>
+                    </span>
+                    <span class="icon is-small is-right">
+                      <i class="fas fa-check"></i>
+                    </span>
+      
+                    <br>
+                    <br>
+      
+                <input
+                  type="submit" class="button is-link is-fullwidth"
+                  value="Registrar">
+              </form>
+              <br>
+              <hr>
+                {% if customers, products, providers, workers, subsidiary %}
+                <article>
+      
+                    <p>Customer</p>
+             <div>
+      
+               <table class="table is-bordered">
+                 <thead>
+                   <tr>
+                     <th><abbr title="id">#</abbr></th>
+                     <th><abbr title="Nombre">customer</abbr></th>
+                     
+      
+                   </tr>
+                 </thead>
+                 <tbody>
+                   <tr  {% for customer in customer %}>
+      
+                     <td>{{customer.id}}</td>
+                     <td>{{customer.name}}</td>
+                     
+      
+      
+                   </tr {% endfor %}>
+                 </tbody>
+               </table>
+            <div>
+      
+              <p>Product</p>
+      
+            </div>
+               <table class="table is-bordered">
+                 <thead>
+                   <tr>
+                     <th><abbr title="id">#</abbr></th>
+                     <th><abbr title="Nombre">product</abbr></th>
+                     
+      
+                   </tr>
+                 </thead>
+                 <tbody>
+                   <tr  {% for Product in providers %}>
+      
+                     <td>{{product.id}}</td>
+                     <td>{{product.name}}</td>
+                     
+      
+      
+                   </tr {% endfor %}>
+                 </tbody>
+               </table>
+      
+               <div>
+      
+                 <p>Order</p>
+      
+               </div>
+      
+               <table class="table is-bordered">
+                 <thead>
+                   <tr>
+                     <th><abbr title="id">#</abbr></th>
+                     <th><abbr title="Nombre">Nombre</abbr></th>
+                     <th><abbr title="Nombre">Puesto</abbr></th>
+      
+                   </tr>
+                 </thead>
+                 <tbody>
+                   <tr  {% for trabajadores in workers %}>
+      
+                     <td>{{trabajadores.id}}</td>
+                     <td>{{trabajadores.name}}</td>
+                     <td>{{trabajadores.position}}</td>
+      
+      
+                   </tr {% endfor %}>
+                 </tbody>
+               </table>
+      
+               <div>
+      
+                 <p>Item</p>
+      
+               </div>
+      
+               <table class="table is-bordered">
+                 <thead>
+                   <tr>
+                     <th><abbr title="id">#</abbr></th>
+                     <th><abbr title="Nombre">Pais</abbr></th>
+                     <th><abbr title="Nombre">Ciudad</abbr></th>
+                     <th><abbr title="Nombre">Pisos</abbr></th>
+      
+                   </tr>
+                 </thead>
+                 <tbody>
+                   <tr  {% for sucursales in subsidiary %}>
+      
+                     <td>{{sucursales.id}}</td>
+                     <td>{{sucursales.country}}</td>
+                     <td>{{sucursales.city}}</td>
+                     <td>{{sucursales.floor}}</td>
+      
+      
+                   </tr {% endfor %}>
+                 </tbody>
+               </table>
+      
+      
+      
+      <!--              <ol>
+                      {% for user in users %}
+                        <li>{{user.username}}</li>
+                      {% endfor %}
+                    </ol>-->
+                  </div>
+                </article>
+      
+                {% else %}
+                  <p>No hay usuarios!</p>
+                {% endif %}
+              </div>
+            </div>
           </div>
-          <input
-            type="submit" class="button is-link is-fullwidth"
-            value="Submit">
-        </form>
-        <br>
-        <hr>
-          {% if users %}
-            <ol>
-              {% for user in users %}
-                <li>{{user.username}}</li>
-              {% endfor %}
-            </ol>
-          {% else %}
-            <p>No hay usuarios!</p>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-    </script>
-    {% block js %}{% endblock %}
-  </body>
-</html>
+          </script>
+          {% block js %}{% endblock %}
+        </body>
